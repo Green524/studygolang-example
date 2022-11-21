@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"fmt"
@@ -8,9 +8,9 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", handler)
+	http.HandleFunc("/", Handler)
 	log.Fatal(http.ListenAndServe("localhost:8080", nil))
 }
-func handler(w http.ResponseWriter, r *http.Request) {
+func Handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "URL.Path=%q\tname=%v\n", r.URL.Path, strings.Split(r.URL.RawQuery, "=")[1])
 }
