@@ -7,6 +7,7 @@ import (
 )
 
 var arr [3]string = [3]string{"heads", "tails", "default"}
+var Ri = 1
 
 func main() {
 	fmt.Println(Signum(-1))
@@ -19,6 +20,8 @@ type Point struct {
 }
 
 var p Point
+
+const abc int = 1
 
 func Signum(x int) int {
 	switch true {

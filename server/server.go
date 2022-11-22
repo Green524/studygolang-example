@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+const Name = "a"
+
 func main() {
 	http.HandleFunc("/", Handler)
 	log.Fatal(http.ListenAndServe("localhost:8080", nil))
