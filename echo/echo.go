@@ -16,7 +16,6 @@ var sep = flag.String("s", " ", "separator")
         separator (default " ")
 
 */
-
 func main() {
 	fmt.Println(*n, *sep)
 	flag.Parse()
