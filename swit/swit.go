@@ -1,4 +1,4 @@
-package swit
+package main
 
 import (
 	"fmt"
@@ -13,6 +13,8 @@ func main() {
 	fmt.Println(Signum(-1))
 	fmt.Println(Signum(0))
 	fmt.Println(Signum(1))
+
+	coinflip()
 }
 
 type Point struct {
@@ -24,6 +26,8 @@ var p Point
 const abc int = 1
 
 func Signum(x int) int {
+	//go 的switch自带return,如果需要case往下走需要手动加关键字 fallthrough
+	//switch true 和其它语言中 if() else if() 类似,会逐个判断
 	switch true {
 	case x > 0:
 		fallthrough

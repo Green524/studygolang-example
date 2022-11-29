@@ -1,4 +1,4 @@
-package swit
+package main
 
 import (
 	"fmt"
