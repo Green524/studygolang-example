@@ -1,4 +1,4 @@
-package main
+package tempc
 
 import (
 	"fmt"
@@ -7,11 +7,17 @@ import (
 
 type Celsius float64
 type Fahrenheit float64
+type Feet float64
+type Meter float64
+type Pounds float64
+type KG float64
 
 const (
 	AbsoluteZeroC Celsius = 273.15
 	FreezingC     Celsius = 0
 	BoilingC      Celsius = 100
+	OneMeter      Meter   = 1
+	OneFT         Feet    = 0.3048
 )
 
 func main() {
@@ -50,18 +56,4 @@ func main() {
 	fmt.Println(d)          // "100°C"
 	fmt.Printf("%g\n", d)   // "100"; does not call String
 	fmt.Println(float64(d)) // "100"; does not call String
-}
-
-//Celsius类型的参数c出现在了函数名的前面，表示声明的是Celsius类型的一个名叫String的方法，该方法返回该类型对象c带着°C温度单位的字符串：
-//c 为调用该方法的对象
-func (c Celsius) String() string {
-	return fmt.Sprintf("%g°C", c)
-}
-
-func CToF(c Celsius) Fahrenheit {
-	return Fahrenheit(c*9/5 + 32)
-}
-
-func FToC(f Fahrenheit) Celsius {
-	return Celsius((f - 32) * 5 / 9)
 }
