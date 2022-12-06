@@ -84,4 +84,12 @@ func main1() {
 	//22269 国 '国'
 	//10
 	//'\n'
+	var f float32 = 16777216
+	fmt.Println(f == f+1)
+
+	const Avogadro = 6.02214129e23
+	fmt.Printf("%f\n", Avogadro)
+
+	var z float64
+	fmt.Println(z, -z, 1/z, -1/z, z/z) // "0 -0 +Inf -Inf NaN"
 }
