@@ -10,7 +10,3 @@ func TestCharcount(t *testing.T) {
 
 	fmt.Println(hasEdge("a", "你好"))
 }
-
-func TestWordfrep(t *testing.T) {
-	wordfreq()
-}
