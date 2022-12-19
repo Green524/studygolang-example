@@ -7,7 +7,7 @@ import (
 	"sort"
 )
 
-func main() {
+func mainma() {
 	args1 := map[string]int{
 		"name":   1,
 		"age":    2,
