@@ -10,7 +10,41 @@ func TestSort(t *testing.T) {
 	Sort(arr)
 }
 
-type Point struct{ X, Y int }
+type Point struct {
+	X, Y int
+}
+type Circle struct {
+	Point
+	Radius int
+}
+type Wheel struct {
+	Circle
+	Spokes int
+}
+
+func TestStruct(t *testing.T) {
+	var w Wheel
+	w.X = 0
+	w.Y = 1
+	w.Radius = 10
+	w.Spokes = 1
+	//w = Wheel{0, 1, 10, 1}
+	//w = Wheel{X: 0, Y: 1, Radius: 10, Spokes: 1}
+	w1 := Wheel{Circle{Point{0, 1}, 10}, 1}
+	w2 := Wheel{
+		Circle: Circle{
+			Point:  Point{0, 1},
+			Radius: 10,
+		},
+		Spokes: 1,
+	}
+	fmt.Println(w1 == w2)
+	fmt.Printf("%#v\n", w1)
+	fmt.Printf("%#v\n", w2)
+	w2.Radius = 11
+	fmt.Println(w1 == w2)
+}
+
 type address struct {
 	hostname string
 	port     int
