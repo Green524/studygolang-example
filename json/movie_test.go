@@ -18,7 +18,7 @@ func TestMarshal(t *testing.T) {
 	}
 	fmt.Printf("%s\n", data)
 
-	var titles []struct{ Movie }
+	var titles []struct{ Title string }
 	fmt.Println(reflect.TypeOf(titles))
 	if err := json.Unmarshal(data, &titles); err != nil {
 		log.Fatalf("JSON unmarshaling failed:%v", err)
