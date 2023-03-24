@@ -31,8 +31,12 @@ func TestValues_Get(t *testing.T) {
 	m = nil
 	fmt.Println(m.Get("item")) // ""
 	m.Add("item", "3")         // panic: assignment to entry in nil map
+
 }
 
 func TestCache(t *testing.T) {
 	fmt.Println(cache)
+	p := Point{1, 2}
+	distance := p.Distance
+	fmt.Println(distance(p))
 }

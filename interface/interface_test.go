@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sort"
+	"strings"
 	"testing"
 	"time"
 )
@@ -48,4 +50,60 @@ func Test1(t *testing.T) {
 
 	var w1 io.Writer = new(bytes.Buffer)
 	fmt.Println(w1)
+}
+
+func TestInterfaceValue(t *testing.T) {
+	var w io.Writer
+	w = os.Stdout
+	w.Write([]byte("hello"))
+	w = new(bytes.Buffer)
+	w.Write([]byte("hello"))
+	w = nil //将type 和value 都置为nil
+	//var x interface{} = time.Now()
+	//fmt.Println(x)
+	var x interface{} = []int{1, 2, 3}
+	//fmt.Println(x == x)
+	x = "nil"
+	var x1 interface{} = "nil"
+	fmt.Println(x == x)
+	fmt.Println(x == x1)
+
+}
+
+const debug = false
+
+func TestInterfaceValue1(t *testing.T) {
+	var buf io.Writer
+	if debug {
+		buf = new(bytes.Buffer)
+	}
+	f(buf)
+}
+
+func f(out io.Writer) {
+	//...do something...
+	if out != nil {
+		fmt.Println(out != nil)
+		out.Write([]byte("done!\n"))
+	}
+}
+
+func TestSortInterface(t *testing.T) {
+	var names []string = []string{"c", "b", "f", "a"}
+	//sort.Sort(sort.StringSlice(names))
+	sort.Strings(names)
+	fmt.Println(names)
+}
+
+func TestPrintTracks(t *testing.T) {
+	//printTracks(tracks)
+	fmt.Println("Martin Solveig" < "Maby")
+	fmt.Println("Martin Solveig" < "Melilah")
+	fmt.Println(strings.Compare("Martin Solveig", "Moby"))
+	fmt.Println(strings.Compare("Martin Solveig", "Melilah"))
+}
+
+func TestByArtist(t *testing.T) {
+	sort.Sort(byArtist(tracks))
+	printTracks(tracks)
 }
