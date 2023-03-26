@@ -17,7 +17,8 @@ const (
 func main() {
 	symbol := [...]string{USD: "$", EUR: "€", GBP: "￡", RMB: "￥"}
 	fmt.Println(RMB, symbol[RMB]) // "3 ￥"
-
+	// [...] 是延迟创建长度的数组
+	fmt.Println(reflect.TypeOf(symbol))
 	r := [...]int8{99: -1}
 	fmt.Println(r[0])
 

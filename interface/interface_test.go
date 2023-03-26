@@ -1,4 +1,4 @@
-package _interface
+package main
 
 import (
 	"bytes"
@@ -104,6 +104,33 @@ func TestPrintTracks(t *testing.T) {
 }
 
 func TestByArtist(t *testing.T) {
-	sort.Sort(byArtist(tracks))
+	sort.Sort(byYear(tracks))
 	printTracks(tracks)
+	//反转排序
+	sort.Sort(sort.Reverse(byYear(tracks)))
+	printTracks(tracks)
+	//自定义排序规则
+	sort.Sort(customSort{tracks, func(x, y *Track) bool {
+		if x.Title != y.Title {
+			return x.Title < y.Title
+		}
+		if x.Year != y.Year {
+			return x.Year < y.Year
+		}
+		if x.Length != y.Length {
+			return x.Length < y.Length
+		}
+		return false
+	}})
+	printTracks(tracks)
+	values := []int{3, 1, 2, 4}
+	//检查是否是已排序
+	fmt.Println(sort.IntsAreSorted(values))
+	//int 排序方式
+	sort.Ints(values)
+	fmt.Println(values)
+	fmt.Println(sort.IntsAreSorted(values))
+	sort.Sort(sort.Reverse(sort.IntSlice(values)))
+	fmt.Println(values)
+	fmt.Println(sort.IntsAreSorted(values))
 }

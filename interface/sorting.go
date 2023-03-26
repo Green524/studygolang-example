@@ -1,4 +1,4 @@
-package _interface
+package main
 
 import (
 	"fmt"
@@ -41,16 +41,31 @@ func printTracks(tracks []*Track) {
 	tw.Flush()
 }
 
-type byArtist []*Track
+type byYear []*Track
 
-func (x byArtist) Len() int {
+func (x byYear) Len() int {
 	return len(x)
 }
-func (x byArtist) Less(i, j int) bool {
-	var bol = x[i].Artist < x[j].Artist
-	fmt.Printf("%s < %s = %v \n", x[i].Artist, x[j].Artist, bol)
+func (x byYear) Less(i, j int) bool {
+	var bol = x[i].Year < x[j].Year
+	fmt.Printf("%v < %v = %v \n", x[i].Year, x[j].Year, bol)
 	return bol
 }
-func (x byArtist) Swap(i, j int) {
+func (x byYear) Swap(i, j int) {
 	x[i], x[j] = x[j], x[i]
+}
+
+type customSort struct {
+	t    []*Track
+	less func(x, y *Track) bool
+}
+
+func (x customSort) Len() int {
+	return len(x.t)
+}
+func (x customSort) Less(i, j int) bool {
+	return x.less(x.t[i], x.t[j])
+}
+func (x customSort) Swap(i, j int) {
+	x.t[i], x.t[j] = x.t[j], x.t[i]
 }

@@ -1,8 +1,8 @@
-package deferred
+package main
 
 import (
+	"flag"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"os"
@@ -60,10 +60,24 @@ func fetch(url string) (filename string, n int64, err error) {
 	if err != nil {
 		return "", 0, err
 	}
-	n, err = io.Copy(f, resp.Body)
+	p := make([]byte, 0, 28)
+	c, err := resp.Body.Read(p[len(p):cap(p)])
+	//p, _ = ioutil.ReadAll(resp.Body)
+	fmt.Println(string(p[:len(p)+c]))
 	// Close file, but prefer error from Copy, if any.
 	if closeErr := f.Close(); err == nil {
 		err = closeErr
 	}
 	return local, n, err
+}
+
+var url = flag.String("url", "localhost:8000", "请求一个URL并返回内容")
+
+func main() {
+	flag.Parse()
+	fetch("http://localhost:8000/list")
+	//p := make([]byte, 0, 512)
+	//fmt.Println(len(p), cap(p))
+	//fmt.Println(len(p[len(p):cap(p)]), cap(p[:]))
+	//fmt.Println(len(p[:]), cap(p[:]))
 }
