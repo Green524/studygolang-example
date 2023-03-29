@@ -1,4 +1,4 @@
-package eval
+package main
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 
 type Expr interface {
 	Eval(env Env) float64
+	Check(vars map[Var]bool) error
 }
 type Var string
 type literal float64

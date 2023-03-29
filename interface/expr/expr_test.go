@@ -1,4 +1,4 @@
-package eval
+package main
 
 import (
 	"fmt"
@@ -7,7 +7,6 @@ import (
 )
 
 func TestEval(t *testing.T) {
-
 	tests := []struct {
 		expr string
 		env  Env
@@ -27,6 +26,7 @@ func TestEval(t *testing.T) {
 			prevExpr = test.expr
 		}
 		expr, err := Parse(test.expr)
+
 		if err != nil {
 			t.Error(err)
 			continue

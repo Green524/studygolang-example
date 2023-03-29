@@ -1,4 +1,4 @@
-package main
+package count
 
 import (
 	"io"
@@ -7,10 +7,14 @@ import (
 
 type ByteCounter int
 
-func (c *ByteCounter) Write(p []byte) (int, error) {
-	*c += ByteCounter(len(p))
+func (r *ByteCounter) Write(p []byte) (int, error) {
+	*r += ByteCounter(len(p))
 	return len(p), nil
 }
+
+//func (r *ByteCounter) Read(b []byte) (n int, err error) {
+//	return 0, nil
+//}
 
 type Artifact interface {
 	Title() string
