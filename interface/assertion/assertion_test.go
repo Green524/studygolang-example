@@ -1,6 +1,10 @@
 package assertion
 
-import "testing"
+import (
+	"fmt"
+	"os"
+	"testing"
+)
 
 func TestAssertion(t *testing.T) {
 	assert()
@@ -14,4 +18,15 @@ func TestAssertion2(t *testing.T) {
 
 func TestAssertion3(t *testing.T) {
 	assert3()
+}
+func TestAssertion4(t *testing.T) {
+	assert4()
+}
+
+func TestAssertion5(t *testing.T) {
+	w := new(os.File)
+	fmt.Printf("%T\n", w)
+	fmt.Printf("%T\n", &w)
+	(*w).Write([]byte("ff"))
+	//writeString(, "Nihao")
 }
