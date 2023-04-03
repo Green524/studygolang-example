@@ -24,9 +24,9 @@ func TestAssertion4(t *testing.T) {
 }
 
 func TestAssertion5(t *testing.T) {
-	w := new(os.File)
+	w := os.Stdout
 	fmt.Printf("%T\n", w)
 	fmt.Printf("%T\n", &w)
-	(*w).Write([]byte("ff"))
-	//writeString(, "Nihao")
+	w.Write([]byte("ff"))
+	writeString(w, "Nihao")
 }

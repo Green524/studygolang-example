@@ -63,6 +63,7 @@ func writeString(w io.Writer, s string) (n int, err error) {
 	}
 	if sw, ok := w.(stringWriter); ok {
 		fmt.Println(ok)
+
 		return sw.WriteString(s)
 	}
 	return w.Write([]byte(s))
