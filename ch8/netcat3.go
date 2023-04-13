@@ -13,13 +13,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	done := make(chan struct{})
+	//done := make(chan struct{})
 	go func() {
 		io.Copy(os.Stdout, conn)
 		log.Println("done")
-		done <- struct{}{}
+		//done <- struct{}{}
 	}()
 	reverb.MustCopy(conn, os.Stdin)
 	conn.Close()
-	<-done
+	//<-done
 }

@@ -2,11 +2,10 @@ package main
 
 import (
 	"flag"
-	"io"
 	"log"
 	"net"
 	"studygolang-example/ch8/reverb"
-	"time"
+	"sync"
 )
 
 var port = flag.String("port", "8000", "端口号")
@@ -18,14 +17,25 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	var wg sync.WaitGroup
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
 			log.Print(err)
 			continue
 		}
-		//go handleConn(conn, timezone(*port))
-		go reverb.HandleConn1(conn)
+		wg.Add(1)
+		//go reverb.HandleConn(conn, timezone(*port))
+		go reverb.HandleConn1(conn, &wg)
+		log.Printf("wait close %v\n", conn.RemoteAddr())
+		wg.Wait()
+		err = conn.Close()
+		log.Printf("closed %v", conn.RemoteAddr())
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+
 	}
 }
 
@@ -39,17 +49,5 @@ func timezone(port string) string {
 		return "Europe/London"
 	default:
 		return "Asia/China"
-	}
-}
-func handleConn(conn net.Conn, tz string) {
-	defer conn.Close()
-	for {
-		str := tz + "=" + time.Now().Format("15:04:05\n")
-		log.Println(str)
-		_, err := io.WriteString(conn, str)
-		if err != nil {
-			return
-		}
-		time.Sleep(1 * time.Second)
 	}
 }
