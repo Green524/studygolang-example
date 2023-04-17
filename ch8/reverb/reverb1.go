@@ -12,12 +12,26 @@ import (
 )
 
 func echo(c net.Conn, shout string, delay time.Duration, wg *sync.WaitGroup) {
-	fmt.Fprintln(c, "\t", strings.ToUpper(shout))
-	time.Sleep(delay)
-	fmt.Fprintln(c, "\t", shout)
-	time.Sleep(delay)
-	fmt.Fprintln(c, "\t", strings.ToLower(shout))
-	wg.Done()
+	ch := make(chan string)
+	go func() {
+		ch <- shout
+	}()
+	for {
+		select {
+		case <-time.After(10 * time.Second):
+			fmt.Fprintln(c, "10秒没有回复自动关闭连接")
+			c.Close()
+			return
+		case <-ch:
+			fmt.Fprintln(c, "\t", strings.ToUpper(shout))
+			time.Sleep(delay)
+			fmt.Fprintln(c, "\t", shout)
+			time.Sleep(delay)
+			fmt.Fprintln(c, "\t", strings.ToLower(shout))
+			//wg.Done()
+		}
+	}
+
 	//if tcpConn, ok := c.(*net.TCPConn); ok {
 	//	log.Fatal("关闭")
 	//	tcpConn.CloseWrite()

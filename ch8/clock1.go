@@ -24,13 +24,11 @@ func main() {
 			log.Print(err)
 			continue
 		}
-		wg.Add(1)
+		//wg.Add(1)
 		//go reverb.HandleConn(conn, timezone(*port))
 		go reverb.HandleConn1(conn, &wg)
-		log.Printf("wait close %v\n", conn.RemoteAddr())
 		wg.Wait()
-		err = conn.Close()
-		log.Printf("closed %v", conn.RemoteAddr())
+		//err = conn.Close()
 		if err != nil {
 			log.Fatal(err)
 			return
