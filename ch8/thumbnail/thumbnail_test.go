@@ -20,6 +20,19 @@ func TestMakeThumbnails3(t *testing.T) {
 func TestMakeThumbnails4(t *testing.T) {
 	fmt.Println(makeThumbnails4(filenames))
 }
+
+func Test(t *testing.T) {
+	var testfiles = []string{"C:\\Users\\admin\\Pictures\\1.jpg", "C:\\Users\\admin\\Pictures\\2.jpg"}
+	ch := make(chan string, 2)
+	go func() {
+		for _, f := range testfiles {
+			ch <- f
+		}
+		close(ch)
+	}()
+
+	makeThumbnails6(ch)
+}
 func TestMakeThumbnails5(t *testing.T) {
 	fmt.Println(makeThumbnails5(filenames))
 }
