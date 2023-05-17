@@ -3,7 +3,8 @@ package bank
 import "sync"
 
 var (
-	mu      sync.Mutex
+	//mu      sync.Mutex
+	mu      sync.RWMutex //多读单写锁
 	balance int
 )
 
@@ -14,10 +15,9 @@ func Deposit(amount int) {
 }
 
 func Balance() int {
-	mu.Lock()
-	b := balance
-	mu.Unlock()
-	return b
+	mu.RLock()
+	defer mu.RUnlock()
+	return balance
 }
 
 //死锁（对已经锁上的goroutine 再次上锁）
