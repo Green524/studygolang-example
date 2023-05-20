@@ -1,8 +1,11 @@
 package memo
 
+import "sync"
+
 type Memo struct {
 	f     Func
 	cache map[string]result
+	mu    sync.Mutex
 }
 
 type Func func(key string) (interface{}, error)
@@ -15,12 +18,16 @@ func New(f Func) *Memo {
 	return &Memo{f: f, cache: make(map[string]result)}
 }
 
-//非并发安全，会导致memo.cache[key] = res 数据竞争，data race
+//在两次获取锁中间goroutine可以随意使用cache，但是会导致一些url被获取两次
 func (memo *Memo) Get(key string) (interface{}, error) {
+	memo.mu.Lock()
 	res, ok := memo.cache[key]
+	memo.mu.Unlock()
 	if !ok {
 		res.value, res.err = memo.f(key)
+		memo.mu.Lock()
 		memo.cache[key] = res
+		memo.mu.Unlock()
 	}
 	return res.value, res.err
 }
