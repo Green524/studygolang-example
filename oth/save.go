@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"github.com/axgle/mahonia"
 	"io"
 	"log"
 	"math/rand"
@@ -17,7 +18,8 @@ var max = flag.Int("max", 20000, "随机数最大值，单位(ms)")
 var file = flag.String("f", "", "需要修改的文件")
 var sec = flag.Int64("s", 2, "多少秒刷新一次")
 var props = make(map[string]string)
-var paragraph = ""
+var paragraph string
+var decoder = mahonia.NewDecoder("gbk")
 
 func main() {
 	flag.Parse()
@@ -27,14 +29,12 @@ func main() {
 		return
 	}
 	loadProps(*file)
-	fmt.Println(props)
 	ticker := time.NewTicker(time.Duration(*sec) * time.Second)
 	defer ticker.Stop()
 
 	for {
 		select {
 		case <-ticker.C:
-			fmt.Println("<-ticker.C")
 			writeProps(*file)
 		}
 	}
@@ -45,8 +45,7 @@ func randNum(min int, max int) int {
 	return rand.Intn(max-min) + min
 }
 func writeProps(path string) {
-	file, err := os.OpenFile(path, os.O_WRONLY|os.O_TRUNC, 0666)
-	fmt.Println("OpenFile")
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_TRUNC, 0777)
 	if err != nil {
 		log.Fatalf("open file failed: %s \n", err.Error())
 	}
@@ -58,11 +57,14 @@ func writeProps(path string) {
 		return
 	}
 	err = writer.Flush()
+
 	for k, v := range props {
 		newValue := fmt.Sprintf("%s=%s\n", k, v)
-		if k == "视频间隔" {
-			newValue = fmt.Sprintf("%s=%d\n", k, randNum(*min, *max))
-			log.Printf("write file: %s\n", newValue)
+		convK := decoder.ConvertString(k)
+		if convK == "视频间隔" {
+			randNum := randNum(*min, *max)
+			newValue = fmt.Sprintf("%s=%d\n", k, randNum)
+			log.Printf("write file: %s=%d\n", convK, randNum)
 		}
 		_, err = writer.WriteString(newValue)
 		if err == io.EOF {
@@ -87,12 +89,13 @@ func loadProps(path string) {
 	for {
 		line, _, err := reader.ReadLine()
 		if err == io.EOF {
-			log.Printf("read %s fail. \n", line)
 			return
 		}
 		i++
 		lineKV := strings.Split(string(line), "=")
 		if len(lineKV) >= 2 {
+			//k := lineKV[0]
+			//v := lineKV[0]
 			props[lineKV[0]] = lineKV[1]
 		} else {
 			if strings.ContainsRune(lineKV[0], '[') && strings.ContainsRune(lineKV[0], ']') {
